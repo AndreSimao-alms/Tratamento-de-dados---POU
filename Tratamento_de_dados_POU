@@ -1,0 +1,1412 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Tratamento de dados - POU.ipynb",
+      "provenance": [],
+      "collapsed_sections": [],
+      "authorship_tag": "ABX9TyPDuTjq5Qgwhu3JXfaZMYwj",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/AndreSimao-alms/Tratamento-de-dados---POU/blob/main/Tratamento_de_dados_POU\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Y-1ioKEX8PSP"
+      },
+      "source": [
+        "### **Importando bibliotecas**\n",
+        "- Pandas\n",
+        "- Matplotlib \n",
+        "- Numpy"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "cbZO9UDr5DID"
+      },
+      "source": [
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "import numpy as np\n",
+        "import matplotlib.ticker as mtick"
+      ],
+      "execution_count": 132,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "s-EmYE_L8nX8"
+      },
+      "source": [
+        "### **Leitura dos dados**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "1KKg3vCN5V63"
+      },
+      "source": [
+        "df = pd.read_excel('Cópia de dados2.xlsx')"
+      ],
+      "execution_count": 10,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "IYDH_Un96KQb",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 638
+        },
+        "outputId": "36adc3f1-698f-45b3-c982-368b9d84258f"
+      },
+      "source": [
+        "df"
+      ],
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Massa do balde</th>\n",
+              "      <th>Temperatura da água</th>\n",
+              "      <th>Unnamed: 2</th>\n",
+              "      <th>Unnamed: 3</th>\n",
+              "      <th>Unnamed: 4</th>\n",
+              "      <th>Unnamed: 5</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>Kg</td>\n",
+              "      <td>oC</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>1.2</td>\n",
+              "      <td>27.5</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>Pressão</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>Medida</td>\n",
+              "      <td>Réplica</td>\n",
+              "      <td>Balde + água</td>\n",
+              "      <td>Tempo</td>\n",
+              "      <td>vacuômetro</td>\n",
+              "      <td>manômetro</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>5</th>\n",
+              "      <td>-</td>\n",
+              "      <td>-</td>\n",
+              "      <td>Kg</td>\n",
+              "      <td>s</td>\n",
+              "      <td>inHg</td>\n",
+              "      <td>Kgf/cm2</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>6</th>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>11</td>\n",
+              "      <td>11.1</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>7</th>\n",
+              "      <td>2</td>\n",
+              "      <td>2</td>\n",
+              "      <td>11.3</td>\n",
+              "      <td>11.48</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>8</th>\n",
+              "      <td>3</td>\n",
+              "      <td>3</td>\n",
+              "      <td>11.4</td>\n",
+              "      <td>10.53</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>9</th>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>11.15</td>\n",
+              "      <td>11.534</td>\n",
+              "      <td>3.5</td>\n",
+              "      <td>1.05</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>10</th>\n",
+              "      <td>5</td>\n",
+              "      <td>2</td>\n",
+              "      <td>12</td>\n",
+              "      <td>10.93</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>11</th>\n",
+              "      <td>6</td>\n",
+              "      <td>3</td>\n",
+              "      <td>10.85</td>\n",
+              "      <td>10.31</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>12</th>\n",
+              "      <td>7</td>\n",
+              "      <td>1</td>\n",
+              "      <td>10.75</td>\n",
+              "      <td>10.9</td>\n",
+              "      <td>3</td>\n",
+              "      <td>1.1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>13</th>\n",
+              "      <td>8</td>\n",
+              "      <td>2</td>\n",
+              "      <td>10.25</td>\n",
+              "      <td>11.13</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>14</th>\n",
+              "      <td>9</td>\n",
+              "      <td>3</td>\n",
+              "      <td>10.8</td>\n",
+              "      <td>11.09</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>15</th>\n",
+              "      <td>10</td>\n",
+              "      <td>1</td>\n",
+              "      <td>9.9</td>\n",
+              "      <td>11</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1.2</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>16</th>\n",
+              "      <td>11</td>\n",
+              "      <td>2</td>\n",
+              "      <td>10.8</td>\n",
+              "      <td>11.28</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>17</th>\n",
+              "      <td>12</td>\n",
+              "      <td>3</td>\n",
+              "      <td>10.8</td>\n",
+              "      <td>11.03</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>18</th>\n",
+              "      <td>13</td>\n",
+              "      <td>-</td>\n",
+              "      <td>1.2</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1.8</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "   Massa do balde Temperatura da água  ...  Unnamed: 4 Unnamed: 5\n",
+              "0              Kg                  oC  ...         NaN        NaN\n",
+              "1             1.2                27.5  ...         NaN        NaN\n",
+              "2             NaN                 NaN  ...         NaN        NaN\n",
+              "3             NaN                 NaN  ...     Pressão        NaN\n",
+              "4          Medida             Réplica  ...  vacuômetro  manômetro\n",
+              "5               -                   -  ...        inHg    Kgf/cm2\n",
+              "6               1                   1  ...           4          1\n",
+              "7               2                   2  ...         NaN        NaN\n",
+              "8               3                   3  ...         NaN        NaN\n",
+              "9               4                   1  ...         3.5       1.05\n",
+              "10              5                   2  ...         NaN        NaN\n",
+              "11              6                   3  ...         NaN        NaN\n",
+              "12              7                   1  ...           3        1.1\n",
+              "13              8                   2  ...         NaN        NaN\n",
+              "14              9                   3  ...         NaN        NaN\n",
+              "15             10                   1  ...           2        1.2\n",
+              "16             11                   2  ...         NaN        NaN\n",
+              "17             12                   3  ...         NaN        NaN\n",
+              "18             13                   -  ...           0        1.8\n",
+              "\n",
+              "[19 rows x 6 columns]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 11
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "yBHnMhKL653x",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "08f329e0-a54a-47c7-d38d-44992f549db9"
+      },
+      "source": [
+        "df.info"
+      ],
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "<bound method DataFrame.info of    Massa do balde Temperatura da água  ...  Unnamed: 4 Unnamed: 5\n",
+              "0              Kg                  oC  ...         NaN        NaN\n",
+              "1             1.2                27.5  ...         NaN        NaN\n",
+              "2             NaN                 NaN  ...         NaN        NaN\n",
+              "3             NaN                 NaN  ...     Pressão        NaN\n",
+              "4          Medida             Réplica  ...  vacuômetro  manômetro\n",
+              "5               -                   -  ...        inHg    Kgf/cm2\n",
+              "6               1                   1  ...           4          1\n",
+              "7               2                   2  ...         NaN        NaN\n",
+              "8               3                   3  ...         NaN        NaN\n",
+              "9               4                   1  ...         3.5       1.05\n",
+              "10              5                   2  ...         NaN        NaN\n",
+              "11              6                   3  ...         NaN        NaN\n",
+              "12              7                   1  ...           3        1.1\n",
+              "13              8                   2  ...         NaN        NaN\n",
+              "14              9                   3  ...         NaN        NaN\n",
+              "15             10                   1  ...           2        1.2\n",
+              "16             11                   2  ...         NaN        NaN\n",
+              "17             12                   3  ...         NaN        NaN\n",
+              "18             13                   -  ...           0        1.8\n",
+              "\n",
+              "[19 rows x 6 columns]>"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 12
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "_ACCBmvx7Vq_",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "eef78c25-a4f1-4412-9904-41d7ea91bbd9"
+      },
+      "source": [
+        "df['Massa do balde']"
+      ],
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0         Kg\n",
+              "1        1.2\n",
+              "2        NaN\n",
+              "3        NaN\n",
+              "4     Medida\n",
+              "5          -\n",
+              "6          1\n",
+              "7          2\n",
+              "8          3\n",
+              "9          4\n",
+              "10         5\n",
+              "11         6\n",
+              "12         7\n",
+              "13         8\n",
+              "14         9\n",
+              "15        10\n",
+              "16        11\n",
+              "17        12\n",
+              "18        13\n",
+              "Name: Massa do balde, dtype: object"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 13
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Lb0DGDdE8wV_"
+      },
+      "source": [
+        "### Limpando bancos de dados e editando linhas e colunas "
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "5UDvPDr7CXX4"
+      },
+      "source": [
+        "df = df.iloc[range(6,19)]"
+      ],
+      "execution_count": 14,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "cVCT1UD6pS4H",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "af15fe35-8f38-4309-e166-9431698e55d9"
+      },
+      "source": [
+        "df.index"
+      ],
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Int64Index([6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], dtype='int64')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 15
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "SHJhm846Dz4R"
+      },
+      "source": [
+        "df = df.rename(columns = {'Massa do balde': 'Medida'}) "
+      ],
+      "execution_count": 16,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "iqXkkIZiEV1Y"
+      },
+      "source": [
+        "df = df.rename(columns = {'Temperatura da água':'Réplica'})"
+      ],
+      "execution_count": 17,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "m71nXyDlIRhQ"
+      },
+      "source": [
+        "df = df.rename(columns = {'Unnamed: 2':'Balde+H20 (Kg)'})"
+      ],
+      "execution_count": 18,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "QbGjxdgfJAil"
+      },
+      "source": [
+        "df = df.rename(columns = {'Unnamed: 3':'Tempo (s)'})"
+      ],
+      "execution_count": 19,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "yTyql6NOJO5U"
+      },
+      "source": [
+        "df = df.rename(columns = {'Unnamed: 4': 'Vac (inHg)'})"
+      ],
+      "execution_count": 20,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "JYnYw7IWJfhE"
+      },
+      "source": [
+        "df = df.rename(columns = {'Unnamed: 5': 'Man (Kfg/cm2)'})"
+      ],
+      "execution_count": 21,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "R1ciN0BE8-ht"
+      },
+      "source": [
+        "### **Selecionando valores pressão**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "GXkWlIArKHn7",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "3ef0e360-ea06-41fa-e3e3-330bae39f0c2"
+      },
+      "source": [
+        "filtro_vac = df['Vac (inHg)'].isnull()\n",
+        "vac = df[~filtro_vac]['Vac (inHg)'] # Valores de Vac separados\n",
+        "vac"
+      ],
+      "execution_count": 73,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "6       4\n",
+              "9     3.5\n",
+              "12      3\n",
+              "15      2\n",
+              "18      0\n",
+              "Name: Vac (inHg), dtype: object"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 73
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "iUDXqFD6aK2R",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "65a0534b-9019-4b6c-d7c5-1ea6a7523777"
+      },
+      "source": [
+        "filtro_Man = df['Man (Kfg/cm2)'].isnull()\n",
+        "Man = df[~filtro_Man]['Man (Kfg/cm2)'] # Valores de Man separados\n",
+        "Man"
+      ],
+      "execution_count": 74,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "6        1\n",
+              "9     1.05\n",
+              "12     1.1\n",
+              "15     1.2\n",
+              "18     1.8\n",
+              "Name: Man (Kfg/cm2), dtype: object"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 74
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "CeTWJY49wsYq"
+      },
+      "source": [
+        "### **Massa de água:**\n",
+        "- Subtração da massa do balde"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 452
+        },
+        "id": "L24UhaNvw0Ow",
+        "outputId": "d7775cc2-1ac2-4b23-b6cd-761f34a55a45"
+      },
+      "source": [
+        "df['Massa H20'] = massa\n",
+        "df"
+      ],
+      "execution_count": 51,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Medida</th>\n",
+              "      <th>Réplica</th>\n",
+              "      <th>Tempo (s)</th>\n",
+              "      <th>Vac (inHg)</th>\n",
+              "      <th>Man (Kfg/cm2)</th>\n",
+              "      <th>Massa H20</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>6</th>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>11.1</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>9.8</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>7</th>\n",
+              "      <td>2</td>\n",
+              "      <td>2</td>\n",
+              "      <td>11.48</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>10.1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>8</th>\n",
+              "      <td>3</td>\n",
+              "      <td>3</td>\n",
+              "      <td>10.53</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>10.2</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>9</th>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>11.534</td>\n",
+              "      <td>3.5</td>\n",
+              "      <td>1.05</td>\n",
+              "      <td>9.95</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>10</th>\n",
+              "      <td>5</td>\n",
+              "      <td>2</td>\n",
+              "      <td>10.93</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>10.8</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>11</th>\n",
+              "      <td>6</td>\n",
+              "      <td>3</td>\n",
+              "      <td>10.31</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>9.65</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>12</th>\n",
+              "      <td>7</td>\n",
+              "      <td>1</td>\n",
+              "      <td>10.9</td>\n",
+              "      <td>3</td>\n",
+              "      <td>1.1</td>\n",
+              "      <td>9.55</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>13</th>\n",
+              "      <td>8</td>\n",
+              "      <td>2</td>\n",
+              "      <td>11.13</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>9.05</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>14</th>\n",
+              "      <td>9</td>\n",
+              "      <td>3</td>\n",
+              "      <td>11.09</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>9.6</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>15</th>\n",
+              "      <td>10</td>\n",
+              "      <td>1</td>\n",
+              "      <td>11</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1.2</td>\n",
+              "      <td>8.7</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>16</th>\n",
+              "      <td>11</td>\n",
+              "      <td>2</td>\n",
+              "      <td>11.28</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>9.6</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>17</th>\n",
+              "      <td>12</td>\n",
+              "      <td>3</td>\n",
+              "      <td>11.03</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>9.6</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>18</th>\n",
+              "      <td>13</td>\n",
+              "      <td>-</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1.8</td>\n",
+              "      <td>0</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "   Medida Réplica Tempo (s) Vac (inHg) Man (Kfg/cm2) Massa H20\n",
+              "6       1       1      11.1          4             1       9.8\n",
+              "7       2       2     11.48        NaN           NaN      10.1\n",
+              "8       3       3     10.53        NaN           NaN      10.2\n",
+              "9       4       1    11.534        3.5          1.05      9.95\n",
+              "10      5       2     10.93        NaN           NaN      10.8\n",
+              "11      6       3     10.31        NaN           NaN      9.65\n",
+              "12      7       1      10.9          3           1.1      9.55\n",
+              "13      8       2     11.13        NaN           NaN      9.05\n",
+              "14      9       3     11.09        NaN           NaN       9.6\n",
+              "15     10       1        11          2           1.2       8.7\n",
+              "16     11       2     11.28        NaN           NaN       9.6\n",
+              "17     12       3     11.03        NaN           NaN       9.6\n",
+              "18     13       -       NaN          0           1.8         0"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 51
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "R9N2OxX9c97Z"
+      },
+      "source": [
+        "### **Média das replicatas Massa:** "
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "qTp6E9ISdsyD",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "b179f0e8-816f-492d-a00f-deadd5e91d3d"
+      },
+      "source": [
+        "i=3\n",
+        "media_m = []\n",
+        "for x in range(0,15,3):  \n",
+        "  medias_m = df[x:i]['Massa H20'].mean().round(3)\n",
+        "  i += 3\n",
+        "  media_m.append(medias_m)\n",
+        "\n",
+        "media_m = pd.Series(media_m) \n",
+        "media_m"
+      ],
+      "execution_count": 72,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0    10.033\n",
+              "1    10.133\n",
+              "2     9.400\n",
+              "3     9.300\n",
+              "4     0.000\n",
+              "dtype: float64"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 72
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "zkO1HcYX5fhZ"
+      },
+      "source": [
+        "### **Média das replicatas Tempo:** \n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "zkCNkJ5t40pB",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "04a32c3c-3bc3-4557-aca3-9aebf8860cfe"
+      },
+      "source": [
+        "media_t = []\n",
+        "x = 3\n",
+        "for i in range(0,15,3):\n",
+        "  medias_t = df[i:x]['Tempo (s)'].mean()\n",
+        "  x += 3 \n",
+        "  media_t.append(medias_t)\n",
+        "media_t"
+      ],
+      "execution_count": 92,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[11.036666666666667,\n",
+              " 10.924666666666667,\n",
+              " 11.040000000000001,\n",
+              " 11.103333333333333,\n",
+              " nan]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 92
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "XtaJ_FgA7_cC"
+      },
+      "source": [
+        "### **Conversão de inHg para Kfg/cm2**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "HorU5HVs5DEs",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "51dd4ba1-a019-491b-fa62-d0fb9d4d4c0d"
+      },
+      "source": [
+        "vac_conv = np.array(vac)*0.0345316\n",
+        "vac_conv"
+      ],
+      "execution_count": 26,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([0.1381264, 0.12086060000000001, 0.10359480000000001, 0.0690632,\n",
+              "       0.0], dtype=object)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 26
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "PIKcz8Ej54kM",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 204
+        },
+        "outputId": "38611b3c-1d42-4e59-f978-9225d4da54bb"
+      },
+      "source": [
+        "df.head()"
+      ],
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Medida</th>\n",
+              "      <th>Réplica</th>\n",
+              "      <th>Balde+H20 (Kg)</th>\n",
+              "      <th>Tempo (s)</th>\n",
+              "      <th>Vac (inHg)</th>\n",
+              "      <th>Man (Kfg/cm2)</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>6</th>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>11</td>\n",
+              "      <td>11.1</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>7</th>\n",
+              "      <td>2</td>\n",
+              "      <td>2</td>\n",
+              "      <td>11.3</td>\n",
+              "      <td>11.48</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>8</th>\n",
+              "      <td>3</td>\n",
+              "      <td>3</td>\n",
+              "      <td>11.4</td>\n",
+              "      <td>10.53</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>9</th>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>11.15</td>\n",
+              "      <td>11.534</td>\n",
+              "      <td>3.5</td>\n",
+              "      <td>1.05</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>10</th>\n",
+              "      <td>5</td>\n",
+              "      <td>2</td>\n",
+              "      <td>12</td>\n",
+              "      <td>10.93</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "   Medida Réplica Balde+H20 (Kg) Tempo (s) Vac (inHg) Man (Kfg/cm2)\n",
+              "6       1       1             11      11.1          4             1\n",
+              "7       2       2           11.3     11.48        NaN           NaN\n",
+              "8       3       3           11.4     10.53        NaN           NaN\n",
+              "9       4       1          11.15    11.534        3.5          1.05\n",
+              "10      5       2             12     10.93        NaN           NaN"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 27
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "dOsecPwYqIT0"
+      },
+      "source": [
+        "### **Desvio Padrão**"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "GxbaOmtDqO8H"
+      },
+      "source": [
+        "**Massa:**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "w1oWI4hA7rRW",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "91c9a0ed-dedc-4dc4-fea3-020c3db549da"
+      },
+      "source": [
+        "std_m = media_m.std()\n",
+        "std_m"
+      ],
+      "execution_count": 28,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "4.361066005003822"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 28
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "2gHJBdu0qZML"
+      },
+      "source": [
+        "**Tempo:**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "mbv0vBBir7Ds",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "1bbaa5cc-77ff-45a1-d1be-4e9f5dff9b4a"
+      },
+      "source": [
+        "media_t = pd.Series(media_t)\n",
+        "std_t = media_t.std()\n",
+        "std_t"
+      ],
+      "execution_count": 29,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0.0742934621519183"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 29
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "KzxE70Vrqd6l"
+      },
+      "source": [
+        "**Pressão Vacuômetro:**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "RQ4lg2N-sZuM",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "c9ba9893-e92f-4a05-bccf-cc7d47456ce6"
+      },
+      "source": [
+        "std_vac = vac.std()\n",
+        "std_vac"
+      ],
+      "execution_count": 30,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "1.5811388300841898"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 30
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "jqJYDCU_qlqF"
+      },
+      "source": [
+        "**Pressão Manômetro:**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "V1cXvheH70XW",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "69d2b0ca-e1f4-4dc5-b7c5-2c97fd2b5579"
+      },
+      "source": [
+        "std_Man = Man.std()\n",
+        "std_Man"
+      ],
+      "execution_count": 31,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0.32710854467592254"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 31
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "cMeOBEsCuDPw"
+      },
+      "source": [
+        "### Cálculos (x,y)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "UTLQuZtlwuFI"
+      },
+      "source": [
+        "#### Eixo y:\n",
+        "\n",
+        "- y = H = (Man + Vac) / gama  (m)\n",
+        "- Massa específica da água em 27.5ºC: 996.39 kg/m3\n",
+        "\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "3XfgiSGXtseH",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "1709e9f3-9345-4f66-f588-01e2d8ab059a"
+      },
+      "source": [
+        "H = ((Man + vac_conv)/ (996.39*9.81))\n",
+        "H"
+      ],
+      "execution_count": 84,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "6     0.000116437\n",
+              "9     0.000119786\n",
+              "12    0.000123135\n",
+              "15    0.000129833\n",
+              "18    0.000184151\n",
+              "Name: Man (Kfg/cm2), dtype: object"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 84
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "pdFG4BXGy0sc"
+      },
+      "source": [
+        "#### Eixo x:\n",
+        "- x = Q = Volume / tempo (m3/h)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "TphrUgIAsWsV",
+        "outputId": "3c952c88-5051-435c-b9cc-3decb7eda9eb"
+      },
+      "source": [
+        "media_t = np.array(media_t)\n",
+        "media_t = media_t/3600\n",
+        "media_t"
+      ],
+      "execution_count": 93,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([0.00306574, 0.00303463, 0.00306667, 0.00308426,        nan])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 93
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "cpmkZsbU06jv",
+        "outputId": "8d702c08-7893-4895-b3c0-ffb64ead2b30"
+      },
+      "source": [
+        "media_m = np.array(media_m)\n",
+        "vol_m = media_m/996.39\n",
+        "vol_m"
+      ],
+      "execution_count": 94,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([0.01006935, 0.01016971, 0.00943406, 0.00933369, 0.        ])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 94
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ap6Bt6Du1V9l",
+        "outputId": "320384d9-ce74-44ea-ce3a-9f453564dde8"
+      },
+      "source": [
+        "# Vazão volumétrica\n",
+        "Q = vol_m/media_t\n",
+        "Q = pd.Series(Q)\n",
+        "Q.fillna(0,inplace=True)\n",
+        "Q"
+      ],
+      "execution_count": 129,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0    3.284476\n",
+              "1    3.351220\n",
+              "2    3.076323\n",
+              "3    3.026235\n",
+              "4    0.000000\n",
+              "dtype: float64"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 129
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "EPB9JoFWvEMg"
+      },
+      "source": [
+        "### Plotagem do gráfico"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 299
+        },
+        "id": "NXUfG7S11jBD",
+        "outputId": "61e50ced-8b0c-4351-c0d8-a61aaf88a364"
+      },
+      "source": [
+        "fig, ax = plt.subplots()\n",
+        "plt.style.use('ggplot')\n",
+        "plt.title('Altura Manométrica x Vazão Volumétrica', loc='left', fontweight='black', family='cursive')\n",
+        "plt.ylabel('H (m)',fontweight='black')\n",
+        "plt.xlabel('Q (m³/h)',fontweight='black')\n",
+        "ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.2e'))\n",
+        "plt.plot(Q,H,color='green', label='Curva da Bomba')\n",
+        "plt.legend()\n",
+        "plt.savefig('GráficoPython.png')\n",
+        "plt.savefig('GráficoPython.pdf')"
+      ],
+      "execution_count": 138,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "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\n",
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "HIJWuDHmtxta"
+      },
+      "source": [
+        ""
+      ]
+    }
+  ]
+}
